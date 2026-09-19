@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly | Organize your work</title>
+    <style>
+        :root { font-family: Georgia, 'Times New Roman', serif; color: #20302c; background: #f5f1e8; }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; }
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 22px max(24px, calc((100% - 1080px) / 2)); background: #203e37; color: #f9f5eb; }
+        .logo { color: inherit; font-size: 25px; font-weight: bold; text-decoration: none; letter-spacing: .5px; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { color: #dce8df; text-decoration: none; font: 14px Arial, sans-serif; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .nav-links .signup-link { padding: 10px 16px; border-radius: 5px; background: #e4a24a; color: #20302c; font-weight: bold; }
+        .page { width: min(100% - 48px, 1080px); margin: 0 auto; }
+        .hero { min-height: 420px; display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 60px; }
+        .eyebrow { color: #a66525; font: bold 12px Arial, sans-serif; letter-spacing: 2px; text-transform: uppercase; }
+        h1 { max-width: 650px; margin: 14px 0; font-size: clamp(42px, 7vw, 76px); line-height: .98; font-weight: normal; }
+        .hero p { max-width: 500px; color: #60716b; font: 17px/1.6 Arial, sans-serif; }
+        .hero-actions { display: flex; gap: 12px; margin-top: 28px; }
+        .button { display: inline-block; border: 0; border-radius: 5px; padding: 14px 22px; background: #203e37; color: #fff; cursor: pointer; font: bold 14px Arial, sans-serif; text-decoration: none; }
+        .button.secondary { background: transparent; border: 1px solid #203e37; color: #20302c; }
+        .note { padding: 35px; border-left: 5px solid #e4a24a; background: #e9e1d1; }
+        .note strong { display: block; margin-bottom: 12px; font-size: 22px; }
+        .note p { margin: 0; color: #60716b; font: 14px/1.6 Arial, sans-serif; }
+        .auth-section { display: none; padding: 60px 0 90px; }
+        .auth-section.visible { display: block; }
+        .auth-card { width: min(100%, 420px); margin: 0 auto; padding: 32px; background: #fffdf8; border: 1px solid #ddd5c5; }
+        .auth-card h2 { margin: 0 0 8px; font-size: 34px; font-weight: normal; }
+        .auth-card p { margin: 0 0 22px; color: #60716b; font: 14px/1.5 Arial, sans-serif; }
+        label { display: block; margin: 15px 0 6px; font: bold 13px Arial, sans-serif; }
+        input { width: 100%; padding: 12px; border: 1px solid #c9d1c8; border-radius: 4px; font: 15px Arial, sans-serif; }
+        .auth-card .button { width: 100%; margin-top: 22px; }
+        [role="status"] { min-height: 20px; margin-top: 15px; font: 13px Arial, sans-serif; }
+        @media (max-width: 650px) {
+            .navbar { padding: 18px 24px; }
+            .nav-links { gap: 12px; }
+            .nav-links a:not(.signup-link) { display: none; }
+            .hero { grid-template-columns: 1fr; gap: 15px; padding: 55px 0 70px; }
+            .note { max-width: 430px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="#home">Taskly</a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="#home" data-page="home">Home</a>
+            <a href="#login" data-page="login">Login</a>
+            <a class="signup-link" href="#signup" data-page="signup">Sign up</a>
+        </nav>
+    </header>
+    <main class="page">
+        <section id="home" class="hero" data-view="home">
+            <div>
+                <div class="eyebrow">A calmer way to work</div>
+                <h1>Make space for what matters.</h1>
+                <p>Keep your tasks clear, your priorities close, and your next step easy to find.</p>
+                <div class="hero-actions">
+                    <a class="button" href="#signup">Create an account</a>
+                    <a class="button secondary" href="#login">Log in</a>
+                </div>
+            </div>
+            <aside class="note"><strong>One list. Less noise.</strong><p>Start with the work in front of you and build momentum one finished task at a time.</p></aside>
+        </section>
+        <section id="login" class="auth-section" data-view="login">
+            <form class="auth-card" data-mode="login">
+                <h2>Welcome back</h2><p>Log in to continue managing your tasks.</p>
+                <label for="login-email">Email</label><input id="login-email" name="email" type="email" autocomplete="email" required>
+                <label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required>
+                <button class="button" type="submit">Log in</button><div role="status"></div>
+            </form>
+        </section>
+        <section id="signup" class="auth-section" data-view="signup">
+            <form class="auth-card" data-mode="signup">
+                <h2>Create your account</h2><p>Get started with a simple task list.</p>
+                <label for="signup-username">Username</label><input id="signup-username" name="username" autocomplete="username" required>
+                <label for="signup-email">Email</label><input id="signup-email" name="email" type="email" autocomplete="email" required>
+                <label for="signup-password">Password</label><input id="signup-password" name="password" type="password" autocomplete="new-password" required>
+                <button class="button" type="submit">Sign up</button><div role="status"></div>
+            </form>
+        </section>
+    </main>
+    <script>
+        const views = document.querySelectorAll('[data-view]')
+        const navLinks = document.querySelectorAll('[data-page]')
+        function showPage(page) {
+            const selectedPage = page === 'login' || page === 'signup' ? page : 'home'
+            views.forEach((view) => view.classList.toggle('visible', view.dataset.view === selectedPage))
+            navLinks.forEach((link) => link.classList.toggle('active', link.dataset.page === selectedPage))
+        }
+        function updatePage() { showPage(window.location.hash.slice(1)) }
+        window.addEventListener('hashchange', updatePage)
+        updatePage()
+        document.querySelectorAll('[data-mode]').forEach((form) => {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault()
+                const message = form.querySelector('[role="status"]')
+                message.textContent = 'Please wait...'
+                const endpoint = form.dataset.mode === 'login' ? '/login' : '/user'
+                const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) })
+                const result = await response.json()
+                message.textContent = result.message || 'Something went wrong.'
+                message.style.color = response.ok ? '#176b57' : '#b42318'
+            })
+        })
+    </script>
+</body>
+</html>
