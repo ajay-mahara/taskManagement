@@ -3,172 +3,42 @@ const express = require('express')
 const app = express()
 require('./database/connection')
 
-const {user, task} = require('./database/connection')
+const userRoute = require('./routes/userRouter')
+const taskRoute = require('./routes/taskRouter')
+
+// const { get_user, post_user, get_user_by_id, update_user, delete_user } = require('./controller/user.controller')
+// const { delete_task, update_task, get_task_by_id, post_task, get_task } = require('./controller/task.controller')
+
 app.use(express.json())
 
 app.get('/', function(req, res) {
 
-    
-    
     res.json('this is home page')
+
 })
 
-app.get('/user',async function(req,res){
+app.use("/api", userRoute )
+app.use("/api", taskRoute )
 
-    const data = await user.findAll()
+// app.get('/user',get_user)
 
+// app.post('/user',post_user)
 
-    res.json({
-        // message : 'this is user page',
-        data
-    })
-})
+// app.get('/user/:id',get_user_by_id)
 
-app.post('/user',async function(req,res){
+// app.patch('/user/:id',update_user)
 
-    const {id,username,email,password} = req.body
+// app.delete('/user/:id',delete_user)
 
-    await user.create({
-        id : id,
-        username : username,
-        email : email,
-        password : password
-    })
+// app.get('/task',get_task)
 
-    res.json('user created successfully')
-})
+// app.post('/task',post_task)
 
-app.get('/user/:id',async function(req,res){
+// app.get('/task/:id',get_task_by_id)
 
-    const id = req.params.id
-    const data = await user.findByPk(id)
+// app.patch('/task/:id',update_task)
 
-    res.json({
-        message : `user ${id} found successfully`,
-        data
-    })
-})
-
-app.patch('/user/:id',async function(req,res){
-
-    const id = req.params.id
-
-    const {username,email,password} = req.body
-
-    await user.update({
-        username : username,
-        email : email,
-        password : password
-    },
-    {
-        where : {
-            id : id
-        }
-    })
-
-    res.json(`user ${id} updated successfully`)
-})
-
-app.delete('/user/:id',async function(req,res){
-
-    const id = req.params.id
-    
-    const data = await user.destroy({
-        where : {
-            id : id
-        }
-    })
-
-    res.json({
-        message : `user ${id} is deleted successfully`,
-        // data
-    })
-})
-
-app.get('/task',async function(req,res){
-
-    const data = await task.findAll()
-
-    
-    res.json({
-        message : 'this is task page',
-        data
-    })
-})
-
-app.post('/task',async function(req,res){
-
-
-    const {id , title , description , status} = req.body
-
-    await task.create({
-        id : id,
-        title : title,
-        description : description,
-        status : status
-    })
-
-
-    res.json({
-        message : 'this is task post page',
-        data
-    })
-})
-
-app.get('/task/:id',async function(req,res){
-
-    const id = req.params.id
-    const data = await task.findByPk(id)
-
-
-    res.json({
-        message : 'this is task get by id page',
-        data
-    })
-})
-
-app.patch('/task/:id',async function(req,res){
-
-    const id = req.params.id
-
-    const {title , description , status} = req.body
-    
-    const task_update =await task.update({
-        title : title,
-        description : description,
-        status : status
-    },
-    {
-        where : {
-            id : id
-        }
-    })
-
-    res.json(`task ${id} updated successfully`)
-})
-
-
-
-// app.delete('/task',function(req,res){
-//     res.json('this is task delete page')
-// })
-
-
-
-app.delete('/task/:id',async function(req,res){
-
-    const id = req.params.id
-    const data = await task.destroy({
-        where : {
-            id : id
-        }
-    })
-
-    res.json({
-        message : `task ${id} is deleted successfully`,
-        // data
-    })
-})
+// app.delete('/task/:id',delete_task)
 
 
 
