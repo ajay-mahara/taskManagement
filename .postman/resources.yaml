@@ -7,3 +7,5 @@ workspace:
 #localResources:
 #  collections:
 #    - ../tests/E2E Test Collection/
+
+this project is a task management system that allows users to create, update, and delete tasks. It also allows users to manage their profiles and view their tasks.
